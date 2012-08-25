@@ -1,11 +1,30 @@
 # 初期フォルダ作成
-bin
 lib
 
 # Gemfileを作成
 $ bundle init
 
 # Gemfileに使用gem記述
+  group :development do
+    # irb拡張
+    gem 'wirble'
+  end
+
+  group :development, :test do
+    # RSpec
+    gem 'rspec', '>= 2.0.0.beta.22'
+    gem 'fuubar' # RSpecフォーマッター
+    gem 'capybara'
+    gem 'launchy'
+
+    # カバレッジ
+    gem 'simplecov', :require => false
+
+    # 自動テスト
+    gem 'guard-rspec'
+    gem 'growl'
+    gem 'libnotify'
+  end
 
 # gemのインストール
 $ bundle
@@ -15,7 +34,7 @@ $ rspec --init
 
 # .rspecを編集
 --color
---format Fuubar
+--format documentation
 --drb
 
 # guardの初期設定

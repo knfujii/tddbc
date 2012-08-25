@@ -1,0 +1,125 @@
+# プロジェクト生成
+$ r new [app_name] -T
+
+# gemfileに使用gem記述
+
+    # デザインまわり
+    gem 'simple_form'
+    gem 'bootstrap-sass'
+    gem 'bootswatch-rails'
+    group :development do
+      gem 'twitter-bootstrap-rails'
+    end
+
+    gem 'haml-rails'
+
+    # Pagination
+    gem 'kaminari'
+
+    group :development do
+      # Use thin as the app server
+      gem 'thin'
+      # erbをhamlへ変換
+      # $ rake haml:convert_erbs
+      # gem 'erb2haml'
+      # irb拡張
+      gem 'wirble'
+    end
+
+    group :development, :test do
+      # RSpec
+      gem 'rspec', '>= 2.0.0.beta.22'
+      gem 'rspec-rails', '>= 2.0.0.beta.22'
+      gem 'fuubar' # RSpecフォーマッター
+      gem 'capybara'
+      gem 'launchy'
+
+      # カバレッジ
+      gem 'simplecov', :require => false
+
+      # テストデータ作成
+      gem 'factory_girl_rails'
+      gem 'rails3-generators', :git => "https://github.com/neocoin/rails3-generators.git"
+
+      # 自動テスト＆高速化
+      gem 'spork', '~> 0.9.0.rc'
+      gem 'rb-fsevent'
+      gem 'guard-spork'
+      gem 'guard-rspec'
+      gem 'growl'
+      gem 'libnotify'
+    end
+
+# RSpecインストール
+$ r g rspec:install
+
+# .rspecを編集
+--color
+--format documentation
+--drb
+
+# SPecでFactory_girlを使用する
+# application.rbを修正
+    # Using RSpec for testing framework
+    config.generators do |g|
+      g.test_framework :rspec, :fixture => true, :view_specs => false
+      g.fixture_replacement :factory_girl, :dir => "spec/factories"
+    end
+
+# sporkの初期設定
+$ spork --bootstrap
+
+# spec/spec_helper.rb
+  # ENV["RAILS_ENV"] ||= 'test' 以下のコードを Spork.prefork do … end のブロック内に移動
+
+  # Spork.prefork do … endブロック内の先頭に追加
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
+  # Spork.each_run do … endブロック内に追加
+  if ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+
+  FactoryGirl.reload
+  [My appname]::Application.reload_routes!
+
+# guardの初期設定
+$ guard init spork
+$ guard init rspec
+
+# Guardfile
+guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAILS_ENV' => 'test' }, wait: 30 do
+guard 'rspec', :version => 2, :cli => "--color --format Fuubar --drb", :all_after_pass => false, :all_on_start => false do
+
+
+# ここまででとりあえずコーディングはスタートできる。
+
+# libフォルダ配下を自動ロード
+# application.rb
+    # Custom directories with classes and modules you want to be autoloadable.
+    config.autoload_paths += %W(#{config.root}/lib)
+
+# タイムゾーンを日本に設定する。ＤＢもローカル時刻で保存。
+# application.rb
+    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
+    config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
+    config.database_timezone = :local
+
+# 日本語化対応
+# application.rb
+    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.i18n.default_locale = :ja
+
+# locales/ja.ymlを作成
+
+# factoriesファイルをDBへロードするrakeタスク追加
+
+# hamlを使用する
+# application.html.hamlを作成

@@ -6,7 +6,7 @@ describe '自動販売機のテスト'  do
   before(:each) do
     @vender_machine = VenderMachine.new
   end
-  
+
   context "お金を投入してない場合" do
     it '総計がゼロ円であること' do
       @vender_machine.total_amount.should == 0
@@ -22,11 +22,11 @@ describe '自動販売機のテスト'  do
     it '総計が１１０円として取得できること' do
       @vender_machine.total_amount.should == 110
     end
-    
+
     it '払い戻された金額が総計であること' do
       @vender_machine.payback.should == 110
     end
-    
+
     it '払い戻し後の総計が０になること' do
       @vender_machine.payback
       @vender_machine.total_amount.should == 0
@@ -56,5 +56,5 @@ describe '自動販売機のテスト'  do
       @vender_machine.insert(5).should == 5
     end
   end
-  
+
 end

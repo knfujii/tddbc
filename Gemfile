@@ -15,13 +15,7 @@ group :development, :test do
   gem 'capybara'
   gem 'launchy'
 
-  # カバレッジ
-  gem 'simplecov', :require => false
-
-  # 自動テスト＆高速化
-  gem 'spork', '~> 0.9.0.rc'
-  gem 'rb-fsevent'
-  gem 'guard-spork'
+  # 自動テスト
   gem 'guard-rspec'
   gem 'growl'
   gem 'libnotify'
