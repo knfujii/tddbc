@@ -1,0 +1,25 @@
+# 初期フォルダ作成
+bin
+lib
+
+# Gemfileを作成
+$ bundle init
+
+# Gemfileに使用gem記述
+
+# gemのインストール
+$ bundle
+
+# RSpec初期ファイル作成
+$ rspec --init
+
+# .rspecを編集
+--color
+--format Fuubar
+--drb
+
+# guardの初期設定
+$ guard init rspec
+
+# Guardfile
+guard 'rspec', :version => 2, :cli => "--color --format Fuubar --drb", :all_after_pass => false, :all_on_start => false do
