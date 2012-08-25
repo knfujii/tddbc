@@ -1,3 +1,5 @@
+require "money_type"
+
 class VenderMachine
   def initialize
     @total_amount = 0
@@ -8,7 +10,13 @@ class VenderMachine
   end
 
   def insert(money)
-    @total_amount += money
+    change = 0 
+    if ok_coin?(money)
+      @total_amount += money
+    else
+      change = money
+    end
+    change
   end
   
   def payback
@@ -16,5 +24,9 @@ class VenderMachine
     @total_amount = 0
     payback_money
   end
-
+  
+  def ok_coin?(money)
+    MoneyType::OK_COIN.include?(money)    
+  end
+  
 end
